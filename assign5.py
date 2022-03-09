@@ -1,5 +1,4 @@
-from hashlib import new
-
+import simple_chalk
 
 name = "Sales Bot"
 mood = "good"
@@ -16,6 +15,13 @@ products = {
     "headphones": 1000
 }
 
+def getProducts(products):
+    s = "We have all kinds for electronics like "
+    for k in products:
+        s += k
+        s+= ", "
+    return s
+
 responses = {
     "what is your name?": 
     "My name is {0}.".format(name),
@@ -24,15 +30,17 @@ responses = {
     "bye":
         "Bye bye have a lovely day :)",
     "default": 
-        "Sorry I have no information about this please call out customer care number 1800-900-800."
+        "Sorry I have no information about this please call out customer care number 1800-900-800.",
+    "contact": "You can call to our customer representative on 1800-900-800",
+    "product": getProducts(products)
+    
 }
 
 def give_price(product):
     for k, v in products.items():
         if k == product:
-            print(v)
-    else:
-        print("Sorry entered product information is not available.")
+            return v
+    return "default"
 
 
 def match(curr_text):
@@ -41,11 +49,17 @@ def match(curr_text):
     elif "how are" in curr_text:
         new_text = "how are you?"
     elif "price" in curr_text:
-        s = curr_text.split("price of")[1]
-        give_price(s)
-        return
+        s = curr_text.split("price of")[1].strip()
+        new_text = give_price(s)
+    elif "want" in curr_text:
+        s = curr_text.split("want")[1].split(" ")[-1].strip()
+        new_text = give_price(s)
     elif "bye" in curr_text:
         new_text = "bye"
+    elif "contact" in curr_text:
+        new_text = "contact"
+    elif 'product' in curr_text:
+        new_text = "product"
     else:
         new_text = "default"
     return new_text
@@ -57,12 +71,21 @@ def res(message):
         new_message = responses["default"]
     return new_message
 
+print(simple_chalk.blue.bold("chatbot : Hi there, Welcome to xyz electronics. how can i help you?"))
 while 1:
     user_input = input()
+    
     user_input = user_input.lower()
     related_input = match(user_input)
-    op_message = res(related_input)
-    print(op_message)
-    if("bye" in op_message):
-        break
+    if(type(related_input) == int):
+        related_input = "Price of that product will be {0}.".format(related_input)
+        print(simple_chalk.blue.bold("chatbot : " + str(related_input)))
+        print()
+    else:
+        op_message = res(related_input)
+        print(simple_chalk.blue.bold("chatbot : " + str(op_message)))
+        print( )
+        if("bye" in op_message):
+            break
+    
 
