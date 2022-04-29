@@ -1,6 +1,4 @@
 
-
-
 common_symp = []
 
 def covid_test():
@@ -12,8 +10,8 @@ def covid_test():
     print("These are the serious symptomps if you have any of them you should see a doctor immediately")
     print('Enter yes or no')
     user_input = input("Are you facing difficulty breathing or shortness of breath? ")
-    user_input1 = input("Are you facing difficulty breathing or shortness of breath? ")
-    user_input2 = input("Are you facing difficulty breathing or shortness of breath? ")
+    user_input1 = input("Are you facing loss of speech or mobility, or confusion? ")
+    user_input2 = input("Are you facing chest pain? ")
 
     if user_input =="yes" or user_input1 == "yes" or user_input2 == "yes":
         return "danger"
